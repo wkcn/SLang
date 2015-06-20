@@ -1,21 +1,21 @@
 #ifndef SVM_H
 #define SVM_H
 
-//Õâ¸ö²»ÊÇÖ§³ÖÏòÁ¿»ú£¬¶øÊÇĞéÄâ»ú~
-//ÔİÊ±²»×öº¯Êı£¬ÒòÎªº¯ÊıÒªÓĞ¶à¸öĞéÄâ²ã
+//è¿™ä¸ªä¸æ˜¯æ”¯æŒå‘é‡æœºï¼Œè€Œæ˜¯è™šæ‹Ÿæœº~
+//æš‚æ—¶ä¸åšå‡½æ•°ï¼Œå› ä¸ºå‡½æ•°è¦æœ‰å¤šä¸ªè™šæ‹Ÿå±‚
 
 #include "Defines.h"
 #include "SPar.h"
 
-typedef BigInt (*SFunc)(SPar);	//ÈÃ²ÎÊıÊµÀıÎª²ÎÊı£¬¿ÉÄÜ»áÓ°ÏìĞ§ÂÊ
+typedef BigInt (*SFunc)(SPar);	//è®©å‚æ•°å®ä¾‹ä¸ºå‚æ•°ï¼Œå¯èƒ½ä¼šå½±å“æ•ˆç‡
 
 class SVM{
 private:
-	map<string, BigInt> vars;	//ºìºÚÊ÷£¿ÎÒ¾õµÃÄÚ²¿Ò²ÊÇÍ¨¹ınewĞÂ½¨ÔªËØµÄ£¬ËùÒÔ¾Í²»ÓÃÖ¸ÕëÁË
-	map<string, Vector<BigInt>> arrays;	//Êı×éÃÇ	//½«À´ÔÙÉèÖÃhash
-	map<string, SFunc>funcs;	//C++º¯Êı
-	map<string, SExp*>sfuncs;	//Slangº¯Êı
-	Vector<string> path;		//ËÑË÷Ä¿Â¼
+	map<string, BigInt> vars;	//çº¢é»‘æ ‘ï¼Ÿæˆ‘è§‰å¾—å†…éƒ¨ä¹Ÿæ˜¯é€šè¿‡newæ–°å»ºå…ƒç´ çš„ï¼Œæ‰€ä»¥å°±ä¸ç”¨æŒ‡é’ˆäº†
+	map<string, Vector<BigInt>> arrays;	//æ•°ç»„ä»¬	//å°†æ¥å†è®¾ç½®hash
+	map<string, SFunc>funcs;	//C++å‡½æ•°
+	map<string, SExp*>sfuncs;	//Slangå‡½æ•°
+	Vector<string> path;		//æœç´¢ç›®å½•
 	SVM *parent;
 private:
 	BigInt& GetVar(const string &);
@@ -31,16 +31,16 @@ public:
 	void AddPath(const string &name);
 
 	void SetVar(const string &name,const BigInt &value);
-	void ClearVar(const string &name);	//¶ÔÄ³¸ö±äÁ¿ÇåÁã
+	void ClearVar(const string &name);	//å¯¹æŸä¸ªå˜é‡æ¸…é›¶
 	void SetArray(const string &name, int id, const BigInt &value);
 	BigInt GetArray(const string &name,int id);
 	int GetArraySize(const string &name);
 	void ClearArray(const string &name);
 	Vector<BigInt>& FindArray(const string &name);
 
-	void Restart();	//ÖØÆôĞéÄâ»ú
-	BigInt GetValue(SExp *);	//¶ÔS±í´ïÊ½ÇóÖµ,ÕâÀïÊ¹ÓÃ¿½±´£¬Ğ´ÆğÀ´¸ü·½±ãĞ©£¬µ±È»¸üºÃµÄ·½Ê½ÊÇĞ´ĞéÄâ¼Ä´æÆ÷·ÖÅä
-	BigInt Eval(SExp *);	//GetValueµÄ±ğÃû
+	void Restart();	//é‡å¯è™šæ‹Ÿæœº
+	BigInt GetValue(SExp *);	//å¯¹Sè¡¨è¾¾å¼æ±‚å€¼,è¿™é‡Œä½¿ç”¨æ‹·è´ï¼Œå†™èµ·æ¥æ›´æ–¹ä¾¿äº›ï¼Œå½“ç„¶æ›´å¥½çš„æ–¹å¼æ˜¯å†™è™šæ‹Ÿå¯„å­˜å™¨åˆ†é…
+	BigInt Eval(SExp *);	//GetValueçš„åˆ«å
 };
 
 #endif

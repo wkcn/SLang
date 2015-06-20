@@ -22,7 +22,7 @@ struct SExp{
 	string name;
 	SExp *parent;
 	int id;
-	Vector<SExp*> elems;	//²»ÖªµÀÎªÊ²Ã´£¬×Ô¼ºĞ´µÄVector²»ÄÜ²é¿´ÏêÏ¸ÔªËØ¸³Öµ
+	Vector<SExp*> elems;	//ä¸çŸ¥é“ä¸ºä»€ä¹ˆï¼Œè‡ªå·±å†™çš„Vectorä¸èƒ½æŸ¥çœ‹è¯¦ç»†å…ƒç´ èµ‹å€¼
 	SExp();
 	void Copy(SExp *);
 };

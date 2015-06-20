@@ -2,19 +2,19 @@
 #define BIGINT_H
 
 #include "UBigInt.h"
-//²»ÖªµÀÊÇ·ñÄÜÓÃ¼Ì³ĞUBigIntµÄ·½Ê½ÊµÏÖ£¿
+//ä¸çŸ¥é“æ˜¯å¦èƒ½ç”¨ç»§æ‰¿UBigIntçš„æ–¹å¼å®ç°ï¼Ÿ
 class BigInt{
 protected:
 	UBigInt num;
-	bool minus;	//¸ººÅ
+	bool minus;	//è´Ÿå·
 public:
-	//¹¹Ôì
+	//æ„é€ 
 	BigInt();
 	BigInt(int);
 	BigInt(const char *);
 
-	//ÔËËã·û(²¿·ÖÊ¹ÓÃÓÑÔª£¬¸üÊÊºÏÇ¿ÖÆ×ª»»£©
-	//Ò»ÔªÔËËã
+	//è¿ç®—ç¬¦(éƒ¨åˆ†ä½¿ç”¨å‹å…ƒï¼Œæ›´é€‚åˆå¼ºåˆ¶è½¬æ¢ï¼‰
+	//ä¸€å…ƒè¿ç®—
 	BigInt operator-();
 
 	BigInt& operator++();//++a
@@ -29,26 +29,27 @@ public:
 	friend BigInt& operator/=(BigInt&, const BigInt&);
 	friend BigInt& operator%=(BigInt&, const BigInt&);
 
-	friend BigInt& BigIntDivide(BigInt &a, const BigInt &b, bool mod);//³ı·¨ºÍÈ¡Ä£ÓÃ
+	friend BigInt& BigIntDivide(BigInt &a, const BigInt &b, bool mod);//é™¤æ³•å’Œå–æ¨¡ç”¨
 
-	//¶şÔªÔËËã
+	//äºŒå…ƒè¿ç®—
 	friend BigInt operator+(const BigInt&, const BigInt &);
 	friend BigInt operator-(const BigInt&, const BigInt &);
 	friend BigInt operator*(const BigInt&, const BigInt &);
 	friend BigInt operator/(const BigInt&, const BigInt &);
 	friend BigInt operator%(const BigInt&, const BigInt &);
 
-	//±È½Ï,Ê¹ÓÃÓÑÔªÄÜÊµÏÖint < UBigInt
-	friend int BigIntCmp(const BigInt&, const BigInt&);	//±È½ÏÓÃ£¬·µ»Ø¸ºÊıÊ±a<b;	0Ê±a=b;	ÕıÊıÊ±a>b
+	//æ¯”è¾ƒ,ä½¿ç”¨å‹å…ƒèƒ½å®ç°int < UBigInt
+	friend int BigIntCmp(const BigInt&, const BigInt&);	//æ¯”è¾ƒç”¨ï¼Œè¿”å›è´Ÿæ•°æ—¶a<b;	0æ—¶a=b;	æ­£æ•°æ—¶a>b
 	friend bool operator==(const BigInt&, const BigInt&);
 	friend bool operator!=(const BigInt&, const BigInt&);
 	friend bool operator<(const BigInt&, const BigInt&);
 	friend bool operator<=(const BigInt&, const BigInt&);
 	friend bool operator>(const BigInt&, const BigInt&);
 	friend bool operator>=(const BigInt&, const BigInt&);
-	bool isZero();//ÅĞ¶ÏÊÇ·ñÎª0£¬ÓÃÓÚ¿ìËÙÅĞ¶Ï
-	int GetInt();	//»ñÈ¡intÖµ,»áÈ¡Ä£1 0000 0000
+	bool isZero();//åˆ¤æ–­æ˜¯å¦ä¸º0ï¼Œç”¨äºå¿«é€Ÿåˆ¤æ–­
+	int GetInt();	//è·å–intå€¼,ä¼šå–æ¨¡1 0000 0000
 public:
+	friend ostream& operator<<(ostream &, BigInt &&);
 	friend ostream& operator<<(ostream &, BigInt &);
 	friend istream& operator>>(istream &, BigInt &);
 };

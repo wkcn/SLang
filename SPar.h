@@ -6,15 +6,15 @@
 
 class SVM;
 
-//²ÎÊıÀà£¬¸ºÔğC++ÓëSlangµÄ½»»¥^-^
+//å‚æ•°ç±»ï¼Œè´Ÿè´£C++ä¸Slangçš„äº¤äº’^-^
 class SPar{
 public:
 	SVM *vm;
-	SExp *exp;	//µ±Ç°±í´ïÊ½
+	SExp *exp;	//å½“å‰è¡¨è¾¾å¼
 public:
 	SPar(SVM *, SExp *);
 	int size();
-	BigInt& operator[](int i);	//·µ»Ø¶ÔÓ¦BigIntÒıÓÃ(±ØĞëÊÇÊµÀı»¯),µÚÒ»¸ö²ÎÊıÏÂ±êÎª0£¬ÒıÓÃ~£¨²»ÄÜ×öÏÂ±ê0´ú±í²ÎÊı´óĞ¡¡·£©
+	BigInt& operator[](int i);	//è¿”å›å¯¹åº”BigIntå¼•ç”¨(å¿…é¡»æ˜¯å®ä¾‹åŒ–),ç¬¬ä¸€ä¸ªå‚æ•°ä¸‹æ ‡ä¸º0ï¼Œå¼•ç”¨~ï¼ˆä¸èƒ½åšä¸‹æ ‡0ä»£è¡¨å‚æ•°å¤§å°ã€‹ï¼‰
 	string GetStr(int i);
 	BigInt GetNum(int i);
 	SExp::SEXP_TYPE GetType(int i);

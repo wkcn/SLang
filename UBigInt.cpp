@@ -22,14 +22,14 @@ UBigInt::UBigInt(unsigned int u){
 UBigInt::UBigInt(const char * s){
 	int slen = 0;
 	while (s[slen] != '\0')++slen;
-	int base = 1;	//»ùÊı£¬ÕâÀïÊ¹ÓÃ10000½øÖÆ
-	int buf = 0;	//»º³å4Î»Êı×Ö
+	int base = 1;	//åŸºæ•°ï¼Œè¿™é‡Œä½¿ç”¨10000è¿›åˆ¶
+	int buf = 0;	//ç¼“å†²4ä½æ•°å­—
 	_len = 0;
 
 	for (int i = slen - 1; i >= 0; i--){
-		if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\r' || s[i] == '\b')continue;	//Ìø¹ı¿Õ¸ñ
+		if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t' || s[i] == '\r' || s[i] == '\b')continue;	//è·³è¿‡ç©ºæ ¼
 		if (!(s[i] >= '0' && s[i] <= '9')){
-			throw "ÄúµÄÊäÈë°üº¬ÁË·ÇÊı×Ö×Ö·û¡£";
+			throw "æ‚¨çš„è¾“å…¥åŒ…å«äº†éæ•°å­—å­—ç¬¦ã€‚";
 		}
 		int k = s[i] - '0';
 		buf += k * base;
@@ -45,14 +45,14 @@ UBigInt::UBigInt(const char * s){
 	if (buf > 0){
 		datas[_len++] = buf;
 	}
-	//Èç¹ûÊı×Ö³¤¶ÈÈÔÊÇ0
+	//å¦‚æœæ•°å­—é•¿åº¦ä»æ˜¯0
 	if (_len == 0){
 		_len = 1;
 		datas[0] = 0;
 	}
 }
 
-//±È½ÏÀà
+//æ¯”è¾ƒç±»
 int UBigIntCmp(const UBigInt &a,const UBigInt &b){
 	if (a._len != b._len)return a._len - b._len;
 	for (int i = a._len - 1; i >= 0; --i){
@@ -91,9 +91,9 @@ int UBigInt::GetInt(){
 	if (_len == 1)return datas[0];
 	return datas[0] + datas[1] * 10000;
 }
-//ÍêÃÀÊµÏÖ£¡
+//å®Œç¾å®ç°ï¼
 
-//ËÄÔòÔËËã
+//å››åˆ™è¿ç®—
 
 UBigInt& UBigInt::operator++(){
 	//++a
@@ -117,16 +117,16 @@ UBigInt UBigInt::operator--(int dummy){
 }
 
 UBigInt& operator+=(UBigInt &a, const UBigInt &b){
-	//²»È·¶¨µÄÓÅ»¯
+	//ä¸ç¡®å®šçš„ä¼˜åŒ–
 	if (b._len == 1){
 		if (b.datas[0] == 0){
 			return a;
 		}
 	}
 	int carry = 0;
-	//ÕâÀï²ÉÓÃÒ»ÖÖ½Ï¼òµ¥µÄĞ´·¨
-	//ĞÔÄÜÓĞËùÎşÉü£¬µ«ÊÇÈİÒ×Àí½â
-	//ÆäÊµ»¹¿ÉÒÔ½øÒ»²½ÓÅ»¯£¬±ÈÈç²»´æÔÚ½øÎ»ÇÒºÍµÄ³¤¶ÈÒÑ³¬¹ıÆäÖĞÒ»¸ö¼ÓÊıÊ±
+	//è¿™é‡Œé‡‡ç”¨ä¸€ç§è¾ƒç®€å•çš„å†™æ³•
+	//æ€§èƒ½æœ‰æ‰€ç‰ºç‰²ï¼Œä½†æ˜¯å®¹æ˜“ç†è§£
+	//å…¶å®è¿˜å¯ä»¥è¿›ä¸€æ­¥ä¼˜åŒ–ï¼Œæ¯”å¦‚ä¸å­˜åœ¨è¿›ä½ä¸”å’Œçš„é•¿åº¦å·²è¶…è¿‡å…¶ä¸­ä¸€ä¸ªåŠ æ•°æ—¶
 	int maxLen = a._len > b._len ? a._len : b._len;
 	int anum, bnum;
 	for (int i = 0; i < maxLen; ++i){
@@ -138,44 +138,44 @@ UBigInt& operator+=(UBigInt &a, const UBigInt &b){
 	}
 	a._len = maxLen;
 	if (carry > 0){
-		a.datas[a._len++] = carry;	//ÓÉ¼Ó·¨ĞÔÖÊ£¬carry²»»á´óÓÚ10000
+		a.datas[a._len++] = carry;	//ç”±åŠ æ³•æ€§è´¨ï¼Œcarryä¸ä¼šå¤§äº10000
 	}
 	return a;
 }
 
 UBigInt& operator-=(UBigInt &a, const UBigInt &b){
-	//²»È·¶¨µÄÓÅ»¯
+	//ä¸ç¡®å®šçš„ä¼˜åŒ–
 	if (b._len == 1){
 		if (b.datas[0] == 0){
 			return a;
 		}
 	}
-	//°´ÊúÊ½¼õ·¨£¬´ÓµÍÎ»¿ªÊ¼¼õ
-	//¿¼ÂÇµ½Ğ§ÂÊ£¬¿ÉÒÔµ½×îºóÔÙ±È½Ïa,b´óĞ¡
-	//¼òµ¥µÄ³¤¶È±È½Ï,a<bÊ±
+	//æŒ‰ç«–å¼å‡æ³•ï¼Œä»ä½ä½å¼€å§‹å‡
+	//è€ƒè™‘åˆ°æ•ˆç‡ï¼Œå¯ä»¥åˆ°æœ€åå†æ¯”è¾ƒa,bå¤§å°
+	//ç®€å•çš„é•¿åº¦æ¯”è¾ƒ,a<bæ—¶
 	if (a._len < b._len){
-		throw "ÎŞ·ûºÅÕûÊı¼õ·¨a-bÖĞ,a²»ÄÜ±ÈbĞ¡";
+		throw "æ— ç¬¦å·æ•´æ•°å‡æ³•a-bä¸­,aä¸èƒ½æ¯”bå°";
 	}
 	for (int i = 0; i < b._len; ++i){
 		a.datas[i] -= b.datas[i];
 		if (a.datas[i] < 0){
-			//Ïò¸ßÎ»½èÎ»
-			//assert(i + 1 < a._len);	//¶ÏÑÔ´æÔÚ¸ßÎ»£¬·ñÔòËµÃ÷a<b
+			//å‘é«˜ä½å€Ÿä½
+			//assert(i + 1 < a._len);	//æ–­è¨€å­˜åœ¨é«˜ä½ï¼Œå¦åˆ™è¯´æ˜a<b
 			if (i + 1 >= a._len){
-				throw "ÎŞ·ûºÅÕûÊıa-bÖĞ£¬a²»ÄÜ±ÈbĞ¡";
+				throw "æ— ç¬¦å·æ•´æ•°a-bä¸­ï¼Œaä¸èƒ½æ¯”bå°";
 			}
 			--a.datas[i + 1];
 			a.datas[i] += 10000;
 		}
 	}
-	while (a.datas[a._len - 1] == 0 && a._len > 1)--a._len;//¸üĞÂ³¤¶È
-	//ÕâÀï´¦ÀíÍê±Ï
-	//ÒòÎª´óÊıµÄ¸ßÎ»²»»áµÈÓÚ0£¬Èç¹ûÔÚ¸ßÎ»ÉÏb>a£¬Ôò»áÔÚÖ®Ç°µÄ½èÎ»¶ÏÑÔÖĞ±¨´í
+	while (a.datas[a._len - 1] == 0 && a._len > 1)--a._len;//æ›´æ–°é•¿åº¦
+	//è¿™é‡Œå¤„ç†å®Œæ¯•
+	//å› ä¸ºå¤§æ•°çš„é«˜ä½ä¸ä¼šç­‰äº0ï¼Œå¦‚æœåœ¨é«˜ä½ä¸Šb>aï¼Œåˆ™ä¼šåœ¨ä¹‹å‰çš„å€Ÿä½æ–­è¨€ä¸­æŠ¥é”™
 	return a;
 }
 
 UBigInt& operator*=(UBigInt &a, const UBigInt &b){
-	//²»È·¶¨µÄÓÅ»¯
+	//ä¸ç¡®å®šçš„ä¼˜åŒ–
 	if (b._len == 1){
 		if (b.datas[0] == 0){
 			a.datas.clear();
@@ -186,16 +186,16 @@ UBigInt& operator*=(UBigInt &a, const UBigInt &b){
 			return a;
 		}
 	}
-	Vector<int> temp;//ÁÙÊ±ÀÛ¼ÓÆ÷
+	Vector<int> temp;//ä¸´æ—¶ç´¯åŠ å™¨
 	for (int i = 0; i < b._len; ++i){
 		for (int j = 0; j < a._len; ++j){
 			temp[i + j] += b.datas[i] * a.datas[j];
 			temp[i + j + 1] += temp[i + j] / 10000;
 			temp[i + j] %= 10000;
-			//ÕâÀï¼òµ¥µØ×öÁËµÚÒ»´Î½øÎ»´¦Àí£¬·ÀÖ¹Òç³ö
+			//è¿™é‡Œç®€å•åœ°åšäº†ç¬¬ä¸€æ¬¡è¿›ä½å¤„ç†ï¼Œé˜²æ­¢æº¢å‡º
 		}
 	}
-	//wÎª´Ó×óµ½ÓÒÊıµÚÒ»¸ö·ÇÁãÎ»£¬×îĞ¡ÖµÎª0
+	//wä¸ºä»å·¦åˆ°å³æ•°ç¬¬ä¸€ä¸ªéé›¶ä½ï¼Œæœ€å°å€¼ä¸º0
 	int w;
 	for (w = temp.size() - 1; w > 0; --w){
 		if (temp[w] != 0)break;
@@ -214,10 +214,10 @@ UBigInt& operator*=(UBigInt &a, const UBigInt &b){
 	return a;
 }
 
-//ÎªÁË¸ü·½±ãµØĞ´divºÍmod,½«Æä·â×°ÎªÒ»¸öº¯Êı
+//ä¸ºäº†æ›´æ–¹ä¾¿åœ°å†™divå’Œmod,å°†å…¶å°è£…ä¸ºä¸€ä¸ªå‡½æ•°
 UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
-	//Ê¹ÓÃ¶ş·Ö·¨ÅĞ¶Ï³ıÊıÄ³Î»
-	//aµÄÎ»ÊıĞ¡ÓÚbµÄÎ»ÊıµÄÇé¿ö£¨±ØÓĞa<b£©
+	//ä½¿ç”¨äºŒåˆ†æ³•åˆ¤æ–­é™¤æ•°æŸä½
+	//açš„ä½æ•°å°äºbçš„ä½æ•°çš„æƒ…å†µï¼ˆå¿…æœ‰a<bï¼‰
 	if (a._len < b._len){
 		if (mod){
 			return a;
@@ -229,13 +229,13 @@ UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
 			return a;
 		}
 	}
-	//ÌØÊâÇé¿öÓÅ»¯£¬²»ÊÇºÜÈ·¶¨ÃüÖĞÆµÂÊ
+	//ç‰¹æ®Šæƒ…å†µä¼˜åŒ–ï¼Œä¸æ˜¯å¾ˆç¡®å®šå‘½ä¸­é¢‘ç‡
 	if (b._len == 1){
 		if (b.datas[0] == 0){
-			throw "³ıÊı²»ÄÜÎª0";
+			throw "é™¤æ•°ä¸èƒ½ä¸º0";
 		}
 		if (b.datas[0] == 1){
-			//³ıÒÔ1
+			//é™¤ä»¥1
 			if (!mod){
 				return a;
 			}
@@ -247,34 +247,34 @@ UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
 			}
 		}
 	}
-	//aµÄÎ»Êı´óÓÚµÈÓÚbµÄÎ»Êı
-	Vector<int> res;	//½á¹û»º´æ
-	int notZero = a._len - 1;//a±»¼õºóµÄ·ÇÁãÎ»
-	int qlen = a._len - b._len;//forÖĞµÄ¼ÌĞøÌõ¼şÖĞµÄ±äÁ¿ÊÇÊ±¿Ì¸üĞÂµÄ
+	//açš„ä½æ•°å¤§äºç­‰äºbçš„ä½æ•°
+	Vector<int> res;	//ç»“æœç¼“å­˜
+	int notZero = a._len - 1;//aè¢«å‡åçš„éé›¶ä½
+	int qlen = a._len - b._len;//forä¸­çš„ç»§ç»­æ¡ä»¶ä¸­çš„å˜é‡æ˜¯æ—¶åˆ»æ›´æ–°çš„
 	for (int q = 0; q <= qlen; ++q){
-		//q´ú±í½«³ıÊı¿¿×óºóÏòÓÒÒÆ¶¯µÄ¸ñÊı
-		int delta = a._len - b._len - q;//Ïà¶ÔÎ»ÖÃÆ«²î
-		//ÓÃ¶ş·ÖÈ¡ÉÌµÄÄ³Î»µÄ×î´óÖµ(ÓÉÓÚÊÇÍò½øÖÆ£¬ËùÒÔhiÈ¡10000)
-		int j = b._len - 1 + delta;	//µ±Ç°a±»¶ÔÆëµÄ×î¸ßÎ»
+		//qä»£è¡¨å°†é™¤æ•°é å·¦åå‘å³ç§»åŠ¨çš„æ ¼æ•°
+		int delta = a._len - b._len - q;//ç›¸å¯¹ä½ç½®åå·®
+		//ç”¨äºŒåˆ†å–å•†çš„æŸä½çš„æœ€å¤§å€¼(ç”±äºæ˜¯ä¸‡è¿›åˆ¶ï¼Œæ‰€ä»¥hiå–10000)
+		int j = b._len - 1 + delta;	//å½“å‰aè¢«å¯¹é½çš„æœ€é«˜ä½
 
 		int big = 0;
 		int base = 1;
 		for (int u = j; u <= notZero; ++u){
-			big += a.datas[u] * base;	//Ôø¾­Ğ´´íĞ´ÎªÁË=
+			big += a.datas[u] * base;	//æ›¾ç»å†™é”™å†™ä¸ºäº†=
 			base *= 10000;
 		}
 
 		int lo = big / (b.datas[b._len -1] + 1), hi = big / (b.datas[b._len - 1]) + 1;//[lo,hi)
 		//int lo = 0, hi = 10000;
-		UBigInt temp;	//½«Òª¼õÈ¥µÄÆ«ÒÆÊı
+		UBigInt temp;	//å°†è¦å‡å»çš„åç§»æ•°
 		while (lo < hi){
 			int mi = (lo + hi) >> 1;
 			temp = b * mi;
-			bool isLarge = false;//¹ı´ó
+			bool isLarge = false;//è¿‡å¤§
 			//cout << temp << "-" << a << endl;
 			if (temp._len - 1 + delta < notZero){
 				isLarge = false;
-				//¶ÔÆëºóa»¹ÊÇ±Ètemp¶àÒ»Î»
+				//å¯¹é½åaè¿˜æ˜¯æ¯”tempå¤šä¸€ä½
 			}
 			else{
 				for (int i = temp._len - 1; i >= 0; --i){
@@ -291,14 +291,14 @@ UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
 			isLarge ? hi = mi : lo = mi + 1;
 		}
 		//cout << "--" << temp << endl;
-		//--loÎªËùÇó
+		//--loä¸ºæ‰€æ±‚
 		res[delta] = --lo;
-		temp = b * res[delta];	//ÉÏÃæ¶ş·Ö¹ı³ÌÖĞµÄtemp²»Ò»¶¨ÊÇ×îÖÕ½á¹û = = Òò´Ë×îºó»¹ÒªËãÒ»´Î
-		//¶ÔÆëÎ»¼õÈ¥temp
+		temp = b * res[delta];	//ä¸Šé¢äºŒåˆ†è¿‡ç¨‹ä¸­çš„tempä¸ä¸€å®šæ˜¯æœ€ç»ˆç»“æœ = = å› æ­¤æœ€åè¿˜è¦ç®—ä¸€æ¬¡
+		//å¯¹é½ä½å‡å»temp
 		//cout << a << "===" << temp << "[][]" << delta << endl;
 		for (int i = 0; i < temp._len; ++i){
 			a.datas[i + delta] -= temp.datas[i];
-			//¼ì²éÊÇ·ñĞèÒªÏòÇ°½èÎ»
+			//æ£€æŸ¥æ˜¯å¦éœ€è¦å‘å‰å€Ÿä½
 			for (int w = i + delta; w <= notZero; ++w){
 				if (a.datas[w] < 0){
 					a.datas[w] += 10000;
@@ -309,16 +309,16 @@ UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
 				}
 			}
 		}
-		//¸üĞÂaµÄ×î¸ß·ÇÁãÎ»
+		//æ›´æ–°açš„æœ€é«˜éé›¶ä½
 		for (; notZero > 0; --notZero){
 			if (a.datas[notZero])break;
 		}
 		//cout <<"=="<< a << endl;
 	}
 	if (mod){
-		//È¡Ä£
+		//å–æ¨¡
 		int w;
-		//È¥³ıa¶àÓàµÄÇ°×º0,ÓÉÄ£µÄĞÔÖÊ£¬a%bµÄÎ»Êı <= bµÄÎ»Êı
+		//å»é™¤aå¤šä½™çš„å‰ç¼€0,ç”±æ¨¡çš„æ€§è´¨ï¼Œa%bçš„ä½æ•° <= bçš„ä½æ•°
 		for (w = b._len - 1; w > 0; --w){
 			if (a.datas[w] != 0)break;
 		}
@@ -326,7 +326,7 @@ UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod){
 		a.datas.resize(a._len);
 	}
 	else{
-		//wÎª´Ó×óµ½ÓÒÊıµÚÒ»¸ö·ÇÁãÎ»£¬×îĞ¡ÖµÎª0
+		//wä¸ºä»å·¦åˆ°å³æ•°ç¬¬ä¸€ä¸ªéé›¶ä½ï¼Œæœ€å°å€¼ä¸º0
 		int w;
 		for (w = res.size() - 1; w > 0; --w){
 			if (res[w] != 0)break;
@@ -374,9 +374,19 @@ UBigInt operator%(const UBigInt &a, const UBigInt &b){
 }
 
 
-//IOÁ÷
+//IOæµ
+ostream& operator<<(ostream &os, UBigInt &&u){
+	os.fill('0');
+	os << u.datas[u._len - 1];
+	for (int i = u._len - 2; i >= 0; i--){
+		os << setw(4) << u.datas[i];
+	}
+	os.fill();
+	return os;
+}
+
 ostream& operator<<(ostream &os, UBigInt &u){
-	//ÎÒ¼ÇµÃC++ IOÁ÷»¹ÓĞÒ»ÖÖºÜ¼òµ¥µÄ²¹Áã·½·¨£¬ÏÖÔÚÕÒ²»µ½ÁË
+	//æˆ‘è®°å¾—C++ IOæµè¿˜æœ‰ä¸€ç§å¾ˆç®€å•çš„è¡¥é›¶æ–¹æ³•ï¼Œç°åœ¨æ‰¾ä¸åˆ°äº†
 	os.fill('0');
 	os << u.datas[u._len - 1];
 	for (int i = u._len - 2; i >= 0; i--){
@@ -387,11 +397,11 @@ ostream& operator<<(ostream &os, UBigInt &u){
 }
 
 istream& operator>>(istream &is, UBigInt &u){
-	//ÕâÀïÒÔ×Ö·û´®µÄĞÎÊ½¶ÁÈë£¬¶Áµ½ÎŞĞ§×Ö·ûÊ±Í£Ö¹
-	//Óöµ½¿Õ¸ñÒ²»áÍ£Ö¹
+	//è¿™é‡Œä»¥å­—ç¬¦ä¸²çš„å½¢å¼è¯»å…¥ï¼Œè¯»åˆ°æ— æ•ˆå­—ç¬¦æ—¶åœæ­¢
+	//é‡åˆ°ç©ºæ ¼ä¹Ÿä¼šåœæ­¢
 	char c;
 	Vector<char> buf;
-	bool read = false;//ÖÁÉÙ¶ÁÒ»´Î
+	bool read = false;//è‡³å°‘è¯»ä¸€æ¬¡
 	while (is.peek() == ' ' || is.peek() == '\n' || is.peek() == '\t'){
 		is.get();
 	}
@@ -403,7 +413,7 @@ istream& operator>>(istream &is, UBigInt &u){
 	if (c == '\r'){
 		is.get();
 		read = true;
-		c = is.peek();	//±ÜÃâÎÄ¼şÁ÷ÖĞ\r\nµÄÇé¿ö
+		c = is.peek();	//é¿å…æ–‡ä»¶æµä¸­\r\nçš„æƒ…å†µ
 	}
 	if (c == '\n' || c == ' ' || c == '\t' || c == '\b'){
 		is.get();

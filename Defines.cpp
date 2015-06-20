@@ -6,8 +6,8 @@ SExp::SExp(){
 
 void SExp::Copy(SExp *e){
 	if (!e)return;
-	//Ö÷Òª´¦Àíparent¡¢idºÍelems
-	(*this) = *e;//Ç³¿½±´
+	//ä¸»è¦å¤„ç†parentã€idå’Œelems
+	(*this) = *e;//æµ…æ‹·è´
 	parent = 0;
 	for (int i = 0; i < e->elems.size(); ++i){
 		elems[i] = new SExp();

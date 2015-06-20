@@ -3,7 +3,7 @@
 
 #include "Defines.h"
 
-//´¦ÀíÁ÷µÄ
+//å¤„ç†æµçš„
 class streamx{
 private:
 	queue<string> buf;
@@ -19,13 +19,13 @@ public:
 	streamx& operator<<(const string&);
 };
 
-//Sugar½´£¬Óï·¨ÌÇºÃºÃ³Ô
-//Óï·¨ÌÇ#(3+1)*5	-> (* (+ 3 1) 5)
+//Sugaré…±ï¼Œè¯­æ³•ç³–å¥½å¥½åƒ
+//è¯­æ³•ç³–#(3+1)*5	-> (* (+ 3 1) 5)
 //		!help\n		-> (help)
 
 class SSugar{
 private:
-	streamx *is;	//ÓÃÁ÷´¦Àí°É
+	streamx *is;	//ç”¨æµå¤„ç†å§
 	queue<char> buf;
 	bool updated;
 	map<string,int> level;
@@ -37,22 +37,22 @@ private:
 	string NewSExp(string name, string left, string right);
 	char GetC(bool &can,bool del = true);
 	void PushS(stack<string> &res, stack<string> &op);
-	inline int ISP(string &op);	//Õ»ÄÚÓÅÏÈ¼¶
-	inline int ICP(string &op); //ÊäÈëÓÅÏÈ¼¶
+	inline int ISP(string &op);	//æ ˆå†…ä¼˜å…ˆçº§
+	inline int ICP(string &op); //è¾“å…¥ä¼˜å…ˆçº§
 	void Update();
 public:
 	SSugar();
-	string Formula2Sexp(string);	//ÖĞ×º±í´ïÊ½×ªS±í´ïÊ½
+	string Formula2Sexp(string);	//ä¸­ç¼€è¡¨è¾¾å¼è½¬Sè¡¨è¾¾å¼
 	string peek();
 	string next();
 	bool eof();
 	void SetStream(streamx *is);
 };
 
-//S±í´ïÊ½´´½¨
+//Sè¡¨è¾¾å¼åˆ›å»º
 class SBuild{
 private:
-	SSugar sugar;	//±¾À´ÓĞReaderµÄ£¬ºóÀ´ÈÃSugar½´´úÌæÁË
+	SSugar sugar;	//æœ¬æ¥æœ‰Readerçš„ï¼Œåæ¥è®©Sugaré…±ä»£æ›¿äº†
 	SExp* macro;
 	bool* ismacro;
 private:

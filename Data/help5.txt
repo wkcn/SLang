@@ -1,6 +1,6 @@
 (\
-    (print "Ò»Ğ©²âÊÔ¹¤¾ß")
-    (print "¿ªÆôdebugÄ£Ê½   (debug 1)")
-    (print "¼ÆÊ±  (timer function)")
-    (print "²âÊÔÊı×Ö¼ÆËã  (testnum)")
+    (print "ä¸€äº›æµ‹è¯•å·¥å…·")
+    (print "å¼€å¯debugæ¨¡å¼   (debug 1)")
+    (print "è®¡æ—¶  (timer function)")
+    (print "æµ‹è¯•æ•°å­—è®¡ç®—  (testnum)")
 )

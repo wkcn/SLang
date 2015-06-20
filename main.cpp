@@ -10,9 +10,9 @@ using namespace std;
 int main(){
 	SVM vm;
 	streamx ss;
-	srand(unsigned int(time(0)));
+	srand(size_t(time(0)));
 
-	//帮助文件
+	//甯姪鏂囦欢
 	SBuild readme;
 	streamx rs;
 	rs << "(readme)";
@@ -35,7 +35,7 @@ int main(){
 
 	return 0;
 
-	//以下是测试用例，现在不需要了
+	//浠ヤ笅鏄祴璇曠敤渚嬶紝鐜板湪涓嶉渶瑕佷簡
 
 	BigInt a, b;
 	a = 100319000;

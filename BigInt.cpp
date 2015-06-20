@@ -2,7 +2,7 @@
 
 BigInt::BigInt(){
 	minus = false;
-	//num»á×Ô¶¯³õÊ¼»¯
+	//numä¼šè‡ªåŠ¨åˆå§‹åŒ–
 }
 
 BigInt::BigInt(int u){
@@ -19,7 +19,7 @@ BigInt::BigInt(int u){
 BigInt::BigInt(const char * s){
 	int slen = 0;
 	while (s[slen] != '\0')++slen;
-	//bool found = false;//ÕÒµ½¸ººÅ
+	//bool found = false;//æ‰¾åˆ°è´Ÿå·
 	int i;
 	for (i = 0; i < slen; ++i){
 		if (s[i] != ' ')break;
@@ -34,7 +34,7 @@ BigInt::BigInt(const char * s){
 	}
 }
 
-//±È½ÏÀà
+//æ¯”è¾ƒç±»
 int BigIntCmp(const BigInt &a, const BigInt &b){
 	if (!a.minus && !b.minus){
 		return UBigIntCmp(a.num, b.num);
@@ -81,9 +81,9 @@ int BigInt::GetInt(){
 	if (minus) w = -w;
 	return w;
 }
-//ÍêÃÀÊµÏÖ£¡
+//å®Œç¾å®ç°ï¼
 
-//ËÄÔòÔËËã
+//å››åˆ™è¿ç®—
 
 BigInt BigInt::operator-(){
 	BigInt temp = *this;
@@ -114,14 +114,14 @@ BigInt BigInt::operator--(int dummy){
 
 BigInt& operator+=(BigInt &a, const BigInt &b){
 	if (a.minus ^ b.minus){
-		//ÒìºÅ
+		//å¼‚å·
 		int w = UBigIntCmp(a.num, b.num);
 		if (w > 0){
 			a.num -= b.num;
 		}
 		else{
 			if (w == 0){
-				a.num = UBigInt();//²»ÖªµÀÎªÊ²Ã´ÓÃ²»ÁËa.num = 0
+				a.num = UBigInt();//ä¸çŸ¥é“ä¸ºä»€ä¹ˆç”¨ä¸äº†a.num = 0
 			}
 			else{
 				a.num = b.num - a.num;
@@ -136,7 +136,7 @@ BigInt& operator+=(BigInt &a, const BigInt &b){
 }
 BigInt& operator-=(BigInt &a, const BigInt &b){
 	if (a.minus ^ b.minus){
-		//ÒìºÅ
+		//å¼‚å·
 		a.num += b.num;
 	}
 	else{
@@ -163,16 +163,16 @@ BigInt& operator*=(BigInt &a, const BigInt &b){
 	return a;
 }
 BigInt& operator/=(BigInt &a, const BigInt &b){
-	//ÕâÀï²ÉÓÃÏòÁãÈ¡Õû
+	//è¿™é‡Œé‡‡ç”¨å‘é›¶å–æ•´
 	a.minus = a.minus ^ b.minus;
 	a.num /= b.num;
 	if (a.num.isZero())a.minus = false;
 	return a;
 }
 BigInt& operator%=(BigInt &a, const BigInt &b){
-	//ÕâÀïÈ¡Ä£µÄ·½Ê½
-	//ÎªÄ£µÄ¾ø¶ÔÖµ = |a| % |b|£¬Ä£µÄ·ûºÅµÈÓÚ±»³ıÊı·ûºÅ
-	//ÆäÊµÕâÀïÊÇÓĞÕùÒéµÄ£¬¼´Ê¹ÊÇC++£¬²»Í¬±àÒëÆ÷µÄÈ¡Ä£·½Ê½¶¼²»Ò»Ñù
+	//è¿™é‡Œå–æ¨¡çš„æ–¹å¼
+	//ä¸ºæ¨¡çš„ç»å¯¹å€¼ = |a| % |b|ï¼Œæ¨¡çš„ç¬¦å·ç­‰äºè¢«é™¤æ•°ç¬¦å·
+	//å…¶å®è¿™é‡Œæ˜¯æœ‰äº‰è®®çš„ï¼Œå³ä½¿æ˜¯C++ï¼Œä¸åŒç¼–è¯‘å™¨çš„å–æ¨¡æ–¹å¼éƒ½ä¸ä¸€æ ·
 	a.num %= b.num;
 	if (a.num.isZero())a.minus = false;
 	return a;
@@ -204,19 +204,24 @@ BigInt operator%(const BigInt &a, const BigInt &b){
 }
 
 
-//IOÁ÷
+//IOæµ
+ostream& operator<<(ostream &os, BigInt &&u){
+	if (u.minus)os << "-";//ä¸ä¼šå­˜åœ¨-0æƒ…å†µ
+	os << u.num;
+	return os;
+}
 ostream& operator<<(ostream &os, BigInt &u){
-	if (u.minus)os << "-";//²»»á´æÔÚ-0Çé¿ö
+	if (u.minus)os << "-";//ä¸ä¼šå­˜åœ¨-0æƒ…å†µ
 	os << u.num;
 	return os;
 }
 
 istream& operator>>(istream &is, BigInt &u){
-	//ÕâÀïÒÔ×Ö·û´®µÄĞÎÊ½¶ÁÈë£¬¶Áµ½ÎŞĞ§×Ö·ûÊ±Í£Ö¹
-	//Óöµ½¿Õ¸ñÒ²»áÍ£Ö¹
+	//è¿™é‡Œä»¥å­—ç¬¦ä¸²çš„å½¢å¼è¯»å…¥ï¼Œè¯»åˆ°æ— æ•ˆå­—ç¬¦æ—¶åœæ­¢
+	//é‡åˆ°ç©ºæ ¼ä¹Ÿä¼šåœæ­¢
 	char c;
 	Vector<char> buf;
-	bool read = false;//ÖÁÉÙ¶ÁÒ»´Î
+	bool read = false;//è‡³å°‘è¯»ä¸€æ¬¡
 	while (is.peek() == ' ' || is.peek() == '\n' || is.peek() == '\t'){
 		is.get();
 	}
@@ -228,7 +233,7 @@ istream& operator>>(istream &is, BigInt &u){
 	if (c == '\r'){
 		is.get();
 		read = true;
-		c = is.peek();	//±ÜÃâÎÄ¼şÁ÷ÖĞ\r\nµÄÇé¿ö
+		c = is.peek();	//é¿å…æ–‡ä»¶æµä¸­\r\nçš„æƒ…å†µ
 	}
 	if (c == '\n' || c == ' ' || c == '\t' || c == '\b'){
 		is.get();

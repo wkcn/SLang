@@ -50,12 +50,17 @@ streamx& streamx::operator<<(const string &s){
 }
 
 SSugar::SSugar(){
-	//ÓÅÏÈ¼¶£¬ÕâÀï²»°üÀ¨±È½Ï·û
+	//ä¼˜å…ˆçº§ï¼Œè¿™é‡Œä¸åŒ…æ‹¬æ¯”è¾ƒç¬¦
 	level["+"] = 10;
 	level["-"] = 10;
 	level["*"] = 11;
 	level["/"] = 11;
 	level["%"] = 11;
+	level["+="] = 12;
+	level["-="] = 12;
+	level["*="] = 13;
+	level["/="] = 13;
+	level["%="] = 13;
 	level["("] = 0;
 	level[")"] = 0;
 	level["=="] = 3;
@@ -65,8 +70,10 @@ SSugar::SSugar(){
 	level[">"] = 3;
 	level[">="] = 3;
 	level["~"] = 15;
+	level[","] = 0;
+	level[";"] = 0;
 
-	//¶à×Ö½Ú²Ù×÷·ûÒıÓÃÍ·
+	//å¤šå­—èŠ‚æ“ä½œç¬¦å¼•ç”¨å¤´
 	level["="] = 1;
 	level["!"] = 1;
 	updated = false;
@@ -94,12 +101,12 @@ string SSugar::NewSExp(string name, string left, string right){
 void SSugar::PushS(stack<string> &res, stack<string> &op){
 	string u = op.top();
 	if (u == "~"){
-		if (res.size() < 1)throw "¹«Ê½´íÎó";
+		if (res.size() < 1)throw "å…¬å¼é”™è¯¯";
 		string right = res.top(); res.pop();
 		res.push(NewSExp("-", "0", right));
 	}
 	else{
-		if (res.size() < 2)throw "¹«Ê½´íÎó";
+		if (res.size() < 2)throw "å…¬å¼é”™è¯¯";
 		string right = res.top(); res.pop();
 		string left = res.top(); res.pop();
 		res.push(NewSExp(u, left, right));
@@ -117,18 +124,18 @@ int SSugar::ICP(string &op){
 }
 
 string SSugar::Formula2Sexp(string s){
-	//²»Ö§³Ö¸ºÊı·ÖÎö~~~
-	//ÔİÊ±²»·ÖÎö²»µÈºÅ
-	//s²»´ø¿Õ¸ñ,\nµÈ·ûºÅ
+	//ä¸æ”¯æŒè´Ÿæ•°åˆ†æ~~~
+	//æš‚æ—¶ä¸åˆ†æä¸ç­‰å·
+	//sä¸å¸¦ç©ºæ ¼,\nç­‰ç¬¦å·
 	stack<string> res;
 	stack<string> op;
 	unsigned int i = 0;
 	try{
-		//ÕâÀï´¦ÀíÒ»Ôª¸ººÅµÄ¹æÔòÊÇ£¬Ö»Òª¸Ã¸ººÅÇ°ÃæÊÇ·ûºÅÔòÈÏÎªÊÇÒ»Ôª¸ººÅ
+		//è¿™é‡Œå¤„ç†ä¸€å…ƒè´Ÿå·çš„è§„åˆ™æ˜¯ï¼Œåªè¦è¯¥è´Ÿå·å‰é¢æ˜¯ç¬¦å·åˆ™è®¤ä¸ºæ˜¯ä¸€å…ƒè´Ÿå·
 		bool minus = true;
 		for (unsigned int w = 0; w < s.size(); ++w){
 			if (s[w] == '-' && minus){
-				//s += "0";	//×Ô¶¯²¹Áã¼´¿É
+				//s += "0";	//è‡ªåŠ¨è¡¥é›¶å³å¯
 				s[w] = '~';
 			}
 			//s += q[w];
@@ -144,8 +151,8 @@ string SSugar::Formula2Sexp(string s){
 					while (!op.empty() && (u = op.top()) != "("){
 						PushS(res, op);
 					}
-					if (op.empty())throw "ÊäÈëµÄ±í´ïÊ½À¨ºÅ²»Æ¥Åä!";
-					op.pop();	//×óÀ¨ºÅ
+					if (op.empty())throw "è¾“å…¥çš„è¡¨è¾¾å¼æ‹¬å·ä¸åŒ¹é…!";
+					op.pop();	//å·¦æ‹¬å·
 				}
 				else{
 					while (!op.empty() && ISP(op.top()) >= ICP(c)){
@@ -178,17 +185,17 @@ string SSugar::Formula2Sexp(string s){
 	}
 	catch (const char* msg){
 		cout << msg << endl;
-		throw "Ê¹ÓÃ#Õ¹¿ªÊ±³öÏÖÁË´íÎó£¬¿ÉÄÜÊÇÄúĞèÒªÕ¹¿ªµÄ¹«Ê½ºóÃæÃ»ÓĞ¿Õ¸ñ¼ä¸ô";
+		throw "ä½¿ç”¨#å±•å¼€æ—¶å‡ºç°äº†é”™è¯¯ï¼Œå¯èƒ½æ˜¯æ‚¨éœ€è¦å±•å¼€çš„å…¬å¼åé¢æ²¡æœ‰ç©ºæ ¼é—´éš”";
 	}
 	catch (...){
-		throw "Ê¹ÓÃ#Õ¹¿ªÊ±³öÏÖÁË´íÎó£¬¿ÉÄÜÊÇÄúĞèÒªÕ¹¿ªµÄ¹«Ê½ºóÃæÃ»ÓĞ¿Õ¸ñ¼ä¸ô";
+		throw "ä½¿ç”¨#å±•å¼€æ—¶å‡ºç°äº†é”™è¯¯ï¼Œå¯èƒ½æ˜¯æ‚¨éœ€è¦å±•å¼€çš„å…¬å¼åé¢æ²¡æœ‰ç©ºæ ¼é—´éš”";
 	}
 	return res.top();
 }
 
 
 bool SSugar::isBlank(char c){
-	//ÎªÊ²Ã´ÎÒÒ²ÓÃĞ¡Ğ´º¯ÊıÃûÁË= =
+	//ä¸ºä»€ä¹ˆæˆ‘ä¹Ÿç”¨å°å†™å‡½æ•°åäº†= =
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\b' || c == '\r' || c == -1);
 }
 
@@ -218,7 +225,7 @@ void SSugar::Update(){
 	while (true){
 		c = GetC(can);
 		if (!can)break;
-		if (isBlank(c))continue;	//Ìø¹ı¿Õ°××Ö·û
+		if (isBlank(c))continue;	//è·³è¿‡ç©ºç™½å­—ç¬¦
 		if (c == '#'){
 			string vn;
 			int left = 0;
@@ -229,7 +236,7 @@ void SSugar::Update(){
 				}
 				if (c == ')'){
 					if (left == 0){
-						//ÉÙÁË×óÀ¨ºÅ
+						//å°‘äº†å·¦æ‹¬å·
 						break;
 					}
 					else{
@@ -238,10 +245,10 @@ void SSugar::Update(){
 				}else if (c == '('){
 					++left;
 				}
-				GetC(can, true);	//Ìø¹ı
+				GetC(can, true);	//è·³è¿‡
 				vn += c;
 			}
-			if (left != 0)throw "À¨ºÅ²»Æ¥Åä";
+			if (left != 0)throw "æ‹¬å·ä¸åŒ¹é…";
 			try{
 				string la = Formula2Sexp(vn);
 				for (unsigned int w = 0; w < la.size(); ++w){
@@ -249,12 +256,12 @@ void SSugar::Update(){
 				}
 			}
 			catch (...){
-				cout << "±àÒë¹«Ê½´íÎó" << endl;
-				throw "±àÒë¹«Ê½´íÎó";
+				cout << "ç¼–è¯‘å…¬å¼é”™è¯¯" << endl;
+				throw "ç¼–è¯‘å…¬å¼é”™è¯¯";
 			}
 		}
 		else{
-			//Ö®Ç°ÓÃ!»á½«!=ÂËµô
+			//ä¹‹å‰ç”¨!ä¼šå°†!=æ»¤æ‰
 			if (c == '$'){
 				string vn;
 				while (can){
@@ -272,8 +279,8 @@ void SSugar::Update(){
 				}
 			}
 			else if (0&&c == '_'){
-				//ÔİÊ±ÔÚSVMÖĞÊµÏÖ_Õ¹¿ª
-				//_xxÒ²µ±×÷ÊÇ(array_get "_" xx)µÄÓï·¨ÌÇ
+				//æš‚æ—¶åœ¨SVMä¸­å®ç°_å±•å¼€
+				//_xxä¹Ÿå½“ä½œæ˜¯(array_get "_" xx)çš„è¯­æ³•ç³–
 				string vn;
 				while (can){
 					c = GetC(can,false);
@@ -292,7 +299,7 @@ void SSugar::Update(){
 			}
 			else{
 				if (c == '\"'){
-					//×Ö·û´®
+					//å­—ç¬¦ä¸²
 					string vn;
 					while (can){
 						c = GetC(can);
@@ -307,7 +314,7 @@ void SSugar::Update(){
 					break;
 				}
 				else{
-					//Ê£ÏÂ¿ÉÄÜ£¬À¨ºÅ£¬±äÁ¿£¬Êı×Ö
+					//å‰©ä¸‹å¯èƒ½ï¼Œæ‹¬å·ï¼Œå˜é‡ï¼Œæ•°å­—
 					if (c == '(' || c == ')'){
 						word = c;
 						break;
@@ -321,11 +328,11 @@ void SSugar::Update(){
 								break;
 							}
 							if (isOP(c))break;
-							GetC(can);	//Ìø¹ı
+							GetC(can);	//è·³è¿‡
 
 							vn += c;
 						}
-						word = vn;	//ÕâÀï¿ÉÓÅ»¯
+						word = vn;	//è¿™é‡Œå¯ä¼˜åŒ–
 						break;
 					}
 				}
@@ -375,19 +382,19 @@ void SBuild::MarkParent(SExp *parent){
 
 SExp* SBuild::Build(bool first){
 	try{
-		//sugarÒÑ¾­ÂËÈ¥¿Õ¸ñµÈ×Ö·û
+		//sugarå·²ç»æ»¤å»ç©ºæ ¼ç­‰å­—ç¬¦
 		SExp *root = new SExp;
 		if (first){
-			//ÎªÁËÊµÏÖºêÕ¹¿ª£¬Ã¿ÌõÃüÁî¶¼ÊÇCOMMANDµÄ×ÓÊ÷
-			//BuildµÄĞ´·¨¿ÉÒÔÊÊµ±·Ö³ÉÁ½º¯Êı
+			//ä¸ºäº†å®ç°å®å±•å¼€ï¼Œæ¯æ¡å‘½ä»¤éƒ½æ˜¯COMMANDçš„å­æ ‘
+			//Buildçš„å†™æ³•å¯ä»¥é€‚å½“åˆ†æˆä¸¤å‡½æ•°
 			root->type = SExp::COMMAND;
 			root->elems.push_back(Build(false));
 			if (1){
-				//ÎªÁË±ÜÃâ´íÎó£¬½«»º´æÇå³ı
+				//ä¸ºäº†é¿å…é”™è¯¯ï¼Œå°†ç¼“å­˜æ¸…é™¤
 				bool err = false;
 				if (!sugar.eof()){
 					err = true;
-					cout << "ÒÔÏÂÎªÃ»ÓĞ±àÒëµÄ×Ö·û£º" << endl;
+					cout << "ä»¥ä¸‹ä¸ºæ²¡æœ‰ç¼–è¯‘çš„å­—ç¬¦ï¼š" << endl;
 				}
 				while (!sugar.eof()){
 					cout << sugar.next();
@@ -400,17 +407,17 @@ SExp* SBuild::Build(bool first){
 		if (sugar.eof())return 0;
 		string s = sugar.peek();
 		if (s != "("){
-			//±äÁ¿
+			//å˜é‡
 			if (s[0] == '@'){
-				//×Ö·û´®
+				//å­—ç¬¦ä¸²
 				root->type = SExp::STR;
 				root->name = s.substr(1);
 				sugar.next();
 				return root;
 			}if (s[0] == ')'){
-				return 0;	//±ÜÃâÈçifµÄelseÓï¾äÎª¿ÕÊ±µÄÇé¿ö
+				return 0;	//é¿å…å¦‚ifçš„elseè¯­å¥ä¸ºç©ºæ—¶çš„æƒ…å†µ
 			}if (s[0] == '`'){
-				//ºêÌæ»»
+				//å®æ›¿æ¢
 				if (s[1] == '0'){
 					root->type = SExp::VAR;
 					char temp[32];
@@ -421,19 +428,19 @@ SExp* SBuild::Build(bool first){
 					string num = s.substr(1);
 					int u;
 					sscanf(num.c_str(), "%d", &u);
-					--u;	//`1²ÅÊÇµÚÒ»¸ö²ÎÊı,ÏÖÔÚ×ªÎª0ÏÂ±ê
+					--u;	//`1æ‰æ˜¯ç¬¬ä¸€ä¸ªå‚æ•°,ç°åœ¨è½¬ä¸º0ä¸‹æ ‡
 					if (u >= macro->elems.size() || u < 0){
-						throw "Ê¹ÓÃÁË²»´æÔÚµÄºê²ÎÊı";
+						throw "ä½¿ç”¨äº†ä¸å­˜åœ¨çš„å®å‚æ•°";
 					}
-					root->Copy(macro->elems[u]);	//ÔÊĞíÎª¿Õ
+					root->Copy(macro->elems[u]);	//å…è®¸ä¸ºç©º
 					*ismacro = true;
-					//CopyÊ±ÒÑ¾­markparentÁË
+					//Copyæ—¶å·²ç»markparentäº†
 				}
 				sugar.next();
 				return root;
 			}
 			else{
-				//Ò»°ã±äÁ¿
+				//ä¸€èˆ¬å˜é‡
 				root->type = SExp::VAR;
 				root->name = s;
 				sugar.next();
@@ -441,9 +448,9 @@ SExp* SBuild::Build(bool first){
 			}
 		}
 		else{
-			//¶ÁÈ¡±êÇ©
-			string label = sugar.next();	//±Ø¶¨´æÔÚ
-			if (label != "(")sugar.next();//Ìø¹ı±êÇ©,×óÀ¨ºÅÊÇÀ¨ºÅ¶àÖØÇ¶Ì×
+			//è¯»å–æ ‡ç­¾
+			string label = sugar.next();	//å¿…å®šå­˜åœ¨
+			if (label != "(")sugar.next();//è·³è¿‡æ ‡ç­¾,å·¦æ‹¬å·æ˜¯æ‹¬å·å¤šé‡åµŒå¥—
 			if (label == "if"){
 				root->type = SExp::IF;
 				root->elems[0] = Build(false);//condition
@@ -467,7 +474,7 @@ SExp* SBuild::Build(bool first){
 				while (r = Build(false)){
 					if (r->type == SExp::STR && first){
 						first = false;
-						continue;	//Ìø¹ı×Ö·û´®
+						continue;	//è·³è¿‡å­—ç¬¦ä¸²
 					}
 					root->elems.push_back(r);
 				}
@@ -481,7 +488,7 @@ SExp* SBuild::Build(bool first){
 					root->elems.push_back(r);
 				}
 			}
-			sugar.next();	//×îÖÕÀ¨ºÅ
+			sugar.next();	//æœ€ç»ˆæ‹¬å·
 		}
 		MarkParent(root);
 		return root;

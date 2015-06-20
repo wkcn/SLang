@@ -9,25 +9,25 @@
 using namespace std;
 
 /*
-	ÎŞ·ûºÅ´óÕûÊıÀà
-	ÕâÀïÊ¹ÓÃ10000½øÖÆ
-	ÓĞ¸öÎÊÌâ£¬²»¿ÉÒÔÊ¹ÓÃUBigInt a = 0,Ô­ÒòÊÇ±àÒëÆ÷ÅĞ¶Ï²»³ö0ÊôÓÚunsigned int»¹ÊÇconst char * 
+	æ— ç¬¦å·å¤§æ•´æ•°ç±»
+	è¿™é‡Œä½¿ç”¨10000è¿›åˆ¶
+	æœ‰ä¸ªé—®é¢˜ï¼Œä¸å¯ä»¥ä½¿ç”¨UBigInt a = 0,åŸå› æ˜¯ç¼–è¯‘å™¨åˆ¤æ–­ä¸å‡º0å±äºunsigned intè¿˜æ˜¯const char * 
 */
 
 class UBigInt{
 protected:
-	Vector<int> datas;	//ÒÔ10000½øÖÆ¼ÇÂ¼´óÊı
-	int _len;	//´¢´æ´óÊıËùÓÃdatasµÄÔªËØÊı,ÊÇ·ñ¿ÉÒÔÓÃdatas.size()´úÌæÕâÒ»ÎÊÌâÖµµÃ¿¼ÂÇ
+	Vector<int> datas;	//ä»¥10000è¿›åˆ¶è®°å½•å¤§æ•°
+	int _len;	//å‚¨å­˜å¤§æ•°æ‰€ç”¨datasçš„å…ƒç´ æ•°,æ˜¯å¦å¯ä»¥ç”¨datas.size()ä»£æ›¿è¿™ä¸€é—®é¢˜å€¼å¾—è€ƒè™‘
 public:
-	//¹¹Ôì
+	//æ„é€ 
 	UBigInt();
 	UBigInt(unsigned int);
-	//UBigInt(const UBigInt&);	//ÒòÎªÄÚ²¿±äÁ¿ÒÑÊµÏÖÉî¿½±´
+	//UBigInt(const UBigInt&);	//å› ä¸ºå†…éƒ¨å˜é‡å·²å®ç°æ·±æ‹·è´
 	UBigInt(const char *);
-	//UBigInt(const string&);	//²»ÏëÒÀÀµÌ«¶àÆäËüÀà
+	//UBigInt(const string&);	//ä¸æƒ³ä¾èµ–å¤ªå¤šå…¶å®ƒç±»
 
-	//ÔËËã·û(²¿·ÖÊ¹ÓÃÓÑÔª£¬¸üÊÊºÏÇ¿ÖÆ×ª»»£©
-	//Ò»ÔªÔËËã
+	//è¿ç®—ç¬¦(éƒ¨åˆ†ä½¿ç”¨å‹å…ƒï¼Œæ›´é€‚åˆå¼ºåˆ¶è½¬æ¢ï¼‰
+	//ä¸€å…ƒè¿ç®—
 	
 	UBigInt& operator++();//++a
 	UBigInt operator++(int dummy);//a++
@@ -40,27 +40,28 @@ public:
 	friend UBigInt& operator/=(UBigInt&, const UBigInt&);
 	friend UBigInt& operator%=(UBigInt&, const UBigInt&);
 
-	friend UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod);//³ı·¨ºÍÈ¡Ä£ÓÃ
+	friend UBigInt& UBigIntDivide(UBigInt &a, const UBigInt &b, bool mod);//é™¤æ³•å’Œå–æ¨¡ç”¨
 
-	//¶şÔªÔËËã
+	//äºŒå…ƒè¿ç®—
 	friend UBigInt operator+(const UBigInt&, const UBigInt &);
 	friend UBigInt operator-(const UBigInt&, const UBigInt &);
 	friend UBigInt operator*(const UBigInt&, const UBigInt &);
 	friend UBigInt operator/(const UBigInt&, const UBigInt &);
 	friend UBigInt operator%(const UBigInt&, const UBigInt &);
 
-	//±È½Ï,Ê¹ÓÃÓÑÔªÄÜÊµÏÖint < UBigInt
-	friend int UBigIntCmp(const UBigInt&,const UBigInt&);	//±È½ÏÓÃ£¬·µ»Ø¸ºÊıÊ±a<b;	0Ê±a=b;	ÕıÊıÊ±a>b
+	//æ¯”è¾ƒ,ä½¿ç”¨å‹å…ƒèƒ½å®ç°int < UBigInt
+	friend int UBigIntCmp(const UBigInt&,const UBigInt&);	//æ¯”è¾ƒç”¨ï¼Œè¿”å›è´Ÿæ•°æ—¶a<b;	0æ—¶a=b;	æ­£æ•°æ—¶a>b
 	friend bool operator==(const UBigInt&,const UBigInt&);
 	friend bool operator!=(const UBigInt&,const UBigInt&);
 	friend bool operator<(const UBigInt&, const UBigInt&);
 	friend bool operator<=(const UBigInt&, const UBigInt&);
 	friend bool operator>(const UBigInt&, const UBigInt&);
 	friend bool operator>=(const UBigInt&, const UBigInt&);
-	bool isZero();//ÅĞ¶ÏÊÇ·ñÎª0£¬ÓÃÓÚ¿ìËÙÅĞ¶Ï
-	int GetInt();	//È¡Ä£1 0000 0000
+	bool isZero();//åˆ¤æ–­æ˜¯å¦ä¸º0ï¼Œç”¨äºå¿«é€Ÿåˆ¤æ–­
+	int GetInt();	//å–æ¨¡1 0000 0000
 public:
 	friend ostream& operator<<(ostream &,UBigInt &);
+	friend ostream& operator<<(ostream &,UBigInt &&);
 	friend istream& operator>>(istream &, UBigInt &);
 };
 

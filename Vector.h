@@ -1,35 +1,35 @@
 #ifndef VECTOR_H
-#define VECOTR_H
+#define VECTOR_H
 
 /*
-	VectorÀà
-	ÕâÀïµÄVectorÀàÄÜ×Ô¶¯¸ù¾İÏÂ±êµ÷Õû¿Õ¼ä´óĞ¡
-	²¢ÇÒ»á×Ô¶¯³õÊ¼»¯¸÷¸öÔªËØ
+	Vectorç±»
+	è¿™é‡Œçš„Vectorç±»èƒ½è‡ªåŠ¨æ ¹æ®ä¸‹æ ‡è°ƒæ•´ç©ºé—´å¤§å°
+	å¹¶ä¸”ä¼šè‡ªåŠ¨åˆå§‹åŒ–å„ä¸ªå…ƒç´ 
 */
 
 
-const int DEFAULT_CAPACITY = 8; //Ä¬ÈÏ³õÊ¼ÈİÁ¿
+const int DEFAULT_CAPACITY = 8; //é»˜è®¤åˆå§‹å®¹é‡
 
 template<typename T>
 class Vector{
 protected:
 	T *_elem;
-	int _size;	//µ±Ç°Ê¹ÓÃÈİÁ¿
-	int _cap;	//µ±Ç°ÉêÇëÈİÁ¿
+	int _size;	//å½“å‰ä½¿ç”¨å®¹é‡
+	int _cap;	//å½“å‰ç”³è¯·å®¹é‡
 private:
-	void CheckMem();//¼ì²éµ±Ç°ÈİÁ¿
-	void Copy(T* addr);	//¿½±´µ±Ç°Êı¾İ
+	void CheckMem();//æ£€æŸ¥å½“å‰å®¹é‡
+	void Copy(T* addr);	//æ‹·è´å½“å‰æ•°æ®
 
 public:
 	Vector();
 	Vector(const Vector<T>&);
-	Vector<T>& operator=(const Vector<T>&);	//¿ËÂ¡	£¨ÉÏÃæµÄ¹¹Ôìº¯ÊıÖ»»áÔÚ±äÁ¿³õÊ¼»¯Ê±µ÷ÓÃ£¡´øÖ¸ÕëµÄÀàÒª×¢ÒâĞ´µÈºÅÖØÔØ£©
+	Vector<T>& operator=(const Vector<T>&);	//å…‹éš†	ï¼ˆä¸Šé¢çš„æ„é€ å‡½æ•°åªä¼šåœ¨å˜é‡åˆå§‹åŒ–æ—¶è°ƒç”¨ï¼å¸¦æŒ‡é’ˆçš„ç±»è¦æ³¨æ„å†™ç­‰å·é‡è½½ï¼‰
 	~Vector();
 
 	void push_back(const T& e);
 	T pop_back();
 
-	T* c_array();	//·µ»ØCÀàĞÍµÄÊı×éÖ¸Õë
+	T* c_array();	//è¿”å›Cç±»å‹çš„æ•°ç»„æŒ‡é’ˆ
 
 	void clear();
 	void resize(int newSize);
@@ -38,14 +38,14 @@ public:
 	bool empty() const;
 
 	T& operator[](int i);
-	T& operator[](int i) const;	//³£Á¿Ä£Ê½µÄ·ÃÎÊ
+	T& operator[](int i) const;	//å¸¸é‡æ¨¡å¼çš„è®¿é—®
 
 };
 
 /*
-VectorµÄÊµÏÖ
-ÕâÒ»µãÓĞµãÌÖÑá
-²¿·ÖC++±àÒëÆ÷²»Ö§³ÖexportÓï¾ä£¬Ä£°åÀà·ÖÀëÊ±³öÏÖÎÊÌâ¡£
+Vectorçš„å®ç°
+è¿™ä¸€ç‚¹æœ‰ç‚¹è®¨åŒ
+éƒ¨åˆ†C++ç¼–è¯‘å™¨ä¸æ”¯æŒexportè¯­å¥ï¼Œæ¨¡æ¿ç±»åˆ†ç¦»æ—¶å‡ºç°é—®é¢˜ã€‚
 */
 
 template <typename T>
@@ -57,8 +57,9 @@ Vector<T>::Vector(){
 
 template <typename T>
 Vector<T>::Vector(const Vector<T> &v){
-	//Vector<T> a = bÊ±µ÷ÓÃ
-	//»òÕßÇ¿ÖÆ×ª»»Ê±µ÷ÓÃ
+    if (this == &v) return;
+	//Vector<T> a = bæ—¶è°ƒç”¨
+	//æˆ–è€…å¼ºåˆ¶è½¬æ¢æ—¶è°ƒç”¨
 	_size = v.size();
 	_cap = 0;
 	_elem = 0;
@@ -71,6 +72,7 @@ Vector<T>::Vector(const Vector<T> &v){
 
 template <typename T>
 Vector<T>& Vector<T>::operator=(const Vector<T> &v){
+    if (this == &v)return *this;
 	_size = v.size();
 	CheckMem();
 	for (int i = 0; i < v.size(); i++){
@@ -89,10 +91,10 @@ Vector<T>::~Vector(){
 
 template<typename T>
 void Vector<T>::CheckMem(){
-	//Ã²ËÆÓÃdelete[]É¾³ı³¤¶ÈÎª1µÄÊı×éÊ±»á±¨´í£¿
-	//À©Èİ
+	//è²Œä¼¼ç”¨delete[]åˆ é™¤é•¿åº¦ä¸º1çš„æ•°ç»„æ—¶ä¼šæŠ¥é”™ï¼Ÿ
+	//æ‰©å®¹
 	if (_size >= _cap){
-		int _newcap = _size << 1;//³ËÒÔ2£¬ËäÈ»ÕâÓĞµãÏñ²»³ÉÊìµÄÓÅ»¯
+		int _newcap = _size << 1;//ä¹˜ä»¥2ï¼Œè™½ç„¶è¿™æœ‰ç‚¹åƒä¸æˆç†Ÿçš„ä¼˜åŒ–
 		if (_newcap < DEFAULT_CAPACITY)_newcap = DEFAULT_CAPACITY;
 		T *q = new T[_newcap];
 		Copy(q);
@@ -101,7 +103,7 @@ void Vector<T>::CheckMem(){
 		_cap = _newcap;
 		return;
 	}
-	//ËõĞ¡
+	//ç¼©å°
 	if (_size * 3 <= _cap && (_size * 2) >= DEFAULT_CAPACITY){
 		int _newcap = _size << 1;
 		T *q = new T[_newcap];
@@ -115,36 +117,36 @@ void Vector<T>::CheckMem(){
 
 template<typename T>
 void Vector<T>::Copy(T* addr){
-	int s = _size < _cap ? _size : _cap;	//±ÜÃâresizeÀ©ÈİÎÊÌâ
+	int s = _size < _cap ? _size : _cap;	//é¿å…resizeæ‰©å®¹é—®é¢˜
 	for (int i = 0; i < s; i++){
 		addr[i] = _elem[i];
 	}
 }
 
-//¹«¿ª²Ù×÷º¯Êı
+//å…¬å¼€æ“ä½œå‡½æ•°
 template<typename T>
 T& Vector<T>::operator[](int i){
 	if (i < 0){
-		throw "Ê¹ÓÃÁË¸ºÊıÏÂ±ê£¬´íÎó£¡";
+		throw "ä½¿ç”¨äº†è´Ÿæ•°ä¸‹æ ‡ï¼Œé”™è¯¯ï¼";
 	}
-	//ÕâÑùĞ´Ó°ÏìÁËĞ§ÂÊ£¬ÉÔÎ¢½µµÍÁËĞÔÄÜ
-	//µ«ÕâÄÜÊ¹Éè¼Æ¸ü·½±ã¡£
+	//è¿™æ ·å†™å½±å“äº†æ•ˆç‡ï¼Œç¨å¾®é™ä½äº†æ€§èƒ½
+	//ä½†è¿™èƒ½ä½¿è®¾è®¡æ›´æ–¹ä¾¿ã€‚
 	if (i >= _size){
 		int oldsize = _size;
 		_size = i + 1;
 		CheckMem();
 		for (int k = oldsize; k <= i; k++){
-			//³õÊ¼»¯
+			//åˆå§‹åŒ–
 			_elem[k] = T();
 		}
 	}
 	return _elem[i];
 }
-//³£Á¿Ä£Ê½
+//å¸¸é‡æ¨¡å¼
 template<typename T>
 T& Vector<T>::operator[](int i) const{
 	if (i >= _size){
-		throw "ÏÂ±êÔ½½ç£¡";
+		throw "ä¸‹æ ‡è¶Šç•Œï¼";
 	}
 	return _elem[i];
 }
@@ -158,7 +160,7 @@ void Vector<T>::push_back(const T& e){
 template<typename T>
 T Vector<T>::pop_back(){
 	if (_size <= 0){
-		throw "POPÁË¿ÕVector£¬´íÎó";
+		throw "POPäº†ç©ºVectorï¼Œé”™è¯¯";
 	}
 	return _elem[--_size];
 }
@@ -172,7 +174,7 @@ T* Vector<T>::c_array(){
 	return q;
 }
 
-//´óĞ¡
+//å¤§å°
 template<typename T>
 int Vector<T>::size() const{
 	return _size;
@@ -183,7 +185,7 @@ bool Vector<T>::empty() const{
 	return _size == 0;
 }
 
-//Çå³ıÀà
+//æ¸…é™¤ç±»
 template<typename T>
 void Vector<T>::clear(){
 	_size = 0;
@@ -195,7 +197,7 @@ void Vector<T>::resize(int newSize){
 	int oldSize = _size;
 	_size = newSize;
 	CheckMem();
-	//Èç¹ûÊÇÀ©Èİ
+	//å¦‚æœæ˜¯æ‰©å®¹
 	for (int i = oldSize; i < newSize; ++i){
 		_elem[i] = T();
 	}

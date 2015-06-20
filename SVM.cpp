@@ -1,7 +1,7 @@
 #include "SVM.h"
 #include "SBuild.h"
 
-//Ò»Ğ©ÄÚÖÃº¯Êı
+//ä¸€äº›å†…ç½®å‡½æ•°
 BigInt Sprint(SPar par){
 	bool first = true;
 	for (int i = 0; i < par.size(); ++i){
@@ -32,7 +32,7 @@ BigInt Sprintf(SPar par){
 
 BigInt SRestart(SPar par){
 	par.vm->Restart();
-	cout << "ÒÑ¾­³É¹¦ÖØÆôĞéÄâ»ú" << endl;
+	cout << "å·²ç»æˆåŠŸé‡å¯è™šæ‹Ÿæœº" << endl;
 	return BigInt();
 }
 
@@ -70,7 +70,7 @@ BigInt SAddPath(SPar par){
 }
 
 BigInt SArrayGet(SPar par){
-	//(array_get "a" 0)	»ñÈ¡a[0]
+	//(array_get "a" 0)	è·å–a[0]
 	return par.vm->GetArray(par.GetStr(0), par.GetNum(1).GetInt());
 }
 
@@ -93,8 +93,8 @@ BigInt SArrayClear(SPar par){
 
 BigInt SDebug(SPar par){
 	par.vm->debug = !(par.GetNum(0).isZero());
-	string msg[2] = { "¹Ø±Õ", "¿ªÆô" };
-	cout << msg[par.vm->debug] << "DebugÄ£Ê½";
+	string msg[2] = { "å…³é—­", "å¼€å¯" };
+	cout << msg[par.vm->debug] << "Debugæ¨¡å¼";
 	return BigInt();
 }
 
@@ -102,8 +102,10 @@ SVM::SVM(){
 	debug = false;
 	parent = 0;
 
-	AddPath("./");	//Ìí¼Ó¸ùÄ¿Â¼
+	AddPath("./");	//æ·»åŠ æ ¹ç›®å½•
 	AddPath("./data/");
+	AddPath("./Data/");
+	AddPath("./DATA/");
 
 	AddFunc("print", Sprint);
 	AddFunc("printf", Sprintf);
@@ -146,7 +148,7 @@ Vector<BigInt>& SVM::FindArray(const string &name){
 
 	return arrays[name];
 
-	//ÒÔÏÂÔİ²»¿¼ÂÇ£¬¿ÉÒÔÊµÏÖÈ«¾Ö±äÁ¿
+	//ä»¥ä¸‹æš‚ä¸è€ƒè™‘ï¼Œå¯ä»¥å®ç°å…¨å±€å˜é‡
 	if (name[0] == '_')return arrays[name];
 	SVM *node = this;
 	while (node){
@@ -182,7 +184,7 @@ void SVM::ClearArray(const string &name){
 }
 
 void SVM::ClearVar(const string &v){
-	vars.erase(v);	//Ö±½ÓÉ¾³ıºÃÁË
+	vars.erase(v);	//ç›´æ¥åˆ é™¤å¥½äº†
 }
 
 BigInt& SVM::GetVar(const string &name){
@@ -194,10 +196,10 @@ BigInt& SVM::GetVar(const string &name){
 	if (!vars.count(name)){
 		if ((name[0] >= '0' && name[0] <= '9')||name[0] == '-'){
 			vars[name] = BigInt(name.c_str());
-			//Êı×Ö£¬ÕâÀïÎÒ¹ÊÒâÁôÒ»¸ö'Bug'£¬Äã¿ÉÒÔ×Ô¼º¶¨ÒåÄ³¸öÊı×ÖµÄÊıÖµ£¬ÎªÁËºÃÍæ
+			//æ•°å­—ï¼Œè¿™é‡Œæˆ‘æ•…æ„ç•™ä¸€ä¸ª'Bug'ï¼Œä½ å¯ä»¥è‡ªå·±å®šä¹‰æŸä¸ªæ•°å­—çš„æ•°å€¼ï¼Œä¸ºäº†å¥½ç©
 		}
 		else{
-			vars[name] = BigInt();	//Ò»°ã±äÁ¿
+			vars[name] = BigInt();	//ä¸€èˆ¬å˜é‡
 		}
 	}
 	return (vars[name]);
@@ -217,6 +219,7 @@ SExp* SVM::SearchFile(const string &filename,SExp *exp,bool *ismacro){
 	bool can = false;
 	for(int i=0;i<path.size();++i){
 		name = path[i] + filename + ".txt";
+		//cout << name << endl;
 		fin.open(name);
 		if (!fin.fail()){
 			can = true;
@@ -224,13 +227,13 @@ SExp* SVM::SearchFile(const string &filename,SExp *exp,bool *ismacro){
 		}
 	}
 	if (!can)return 0;
-	SBuild bu;	//buildÆ÷ÊÇÒ»´ÎĞÔµÄ£¬ËùÒÔ²»ÓÃµ£ĞÄÒ»Ğ©Ó°ÏìÎ´À´µÄÎÊÌâ
+	SBuild bu;	//buildå™¨æ˜¯ä¸€æ¬¡æ€§çš„ï¼Œæ‰€ä»¥ä¸ç”¨æ‹…å¿ƒä¸€äº›å½±å“æœªæ¥çš„é—®é¢˜
 	streamx ss;
-	if(exp)bu.SetMacro(exp,ismacro);	//ºê
+	if(exp)bu.SetMacro(exp,ismacro);	//å®
 	bu.SetStream(ss);
 	string buf;
 	while (!fin.eof()){
-		getline(fin, buf);	//eofºÃ·³
+		getline(fin, buf);	//eofå¥½çƒ¦
 		ss << buf;
 	}
 	fin.close();
@@ -250,8 +253,8 @@ BigInt SVM::GetValue(SExp *s){
 		//if (s->type == SExp::FUNC || s->type == SExp::IF || s->type == SExp::WHILE)cout << endl;
 	}
 	try{
-		if (s->type == SExp::COMMAND){
-			if (s->elems.size() == 0)return BigInt();	//¿ÕÓï¾ä
+		if (s->type == SExp::COMMAND || s->name[0] == ',' || s->name[0] == ';'){
+			if (s->elems.size() == 0)return BigInt();	//ç©ºè¯­å¥
 			for (int i = 0; i < s->elems.size() - 1; ++i){
 				GetValue(s->elems[i]);
 			}
@@ -259,7 +262,7 @@ BigInt SVM::GetValue(SExp *s){
 		}
 		else if (s->type == SExp::FUNC){
 			if (s->name == "+"){
-				BigInt count;//ÀÛ¼ÓÆ÷
+				BigInt count;//ç´¯åŠ å™¨
 				if (s->elems.size() > 0)count = GetValue(s->elems[0]);
 				for (int i = 1; i < s->elems.size(); ++i){
 					count += GetValue(s->elems[i]);
@@ -267,7 +270,7 @@ BigInt SVM::GetValue(SExp *s){
 				return count;
 			}
 			else if (s->name == "-"){
-				BigInt count;//ÀÛ¼ÓÆ÷
+				BigInt count;//ç´¯åŠ å™¨
 				if (s->elems.size() > 0)count = GetValue(s->elems[0]);
 				for (int i = 1; i < s->elems.size(); ++i){
 					count -= GetValue(s->elems[i]);
@@ -275,7 +278,7 @@ BigInt SVM::GetValue(SExp *s){
 				return count;
 			}
 			else if (s->name == "*"){
-				BigInt count;//ÀÛ¼ÓÆ÷
+				BigInt count;//ç´¯åŠ å™¨
 				if (s->elems.size() > 0)count = GetValue(s->elems[0]);
 				for (int i = 1; i < s->elems.size(); ++i){
 					count *= GetValue(s->elems[i]);
@@ -283,7 +286,7 @@ BigInt SVM::GetValue(SExp *s){
 				return count;
 			}
 			else if (s->name == "/"){
-				BigInt count;//ÀÛ¼ÓÆ÷
+				BigInt count;//ç´¯åŠ å™¨
 				if (s->elems.size() > 0)count = GetValue(s->elems[0]);
 				for (int i = 1; i < s->elems.size(); ++i){
 					count /= GetValue(s->elems[i]);
@@ -291,7 +294,7 @@ BigInt SVM::GetValue(SExp *s){
 				return count;
 			}
 			else if (s->name == "%"){
-				BigInt count;//ÀÛ¼ÓÆ÷
+				BigInt count;//ç´¯åŠ å™¨
 				if (s->elems.size() > 0)count = GetValue(s->elems[0]);
 				for (int i = 1; i < s->elems.size(); ++i){
 					count %= GetValue(s->elems[i]);
@@ -299,8 +302,23 @@ BigInt SVM::GetValue(SExp *s){
 				return count;
 			}
 			else if (s->name == "="){
-				//¸³Öµ
+				//èµ‹å€¼
 				return (GetVar(s->elems[0]->name) = GetValue(s->elems[1]));
+			}
+			else if (s->name == "+="){
+				return (GetVar(s->elems[0]->name) += GetValue(s->elems[1]));
+			}
+			else if (s->name == "-="){
+				return (GetVar(s->elems[0]->name) -= GetValue(s->elems[1]));
+			}
+			else if (s->name == "*="){
+				return (GetVar(s->elems[0]->name) *= GetValue(s->elems[1]));
+			}
+			else if (s->name == "/="){
+				return (GetVar(s->elems[0]->name) /= GetValue(s->elems[1]));
+			}
+			else if (s->name == "%="){
+				return (GetVar(s->elems[0]->name) %= GetValue(s->elems[1]));
 			}
 			else if (s->name == "=="){
 				return (GetValue(s->elems[0]) == GetValue(s->elems[1]));
@@ -321,31 +339,31 @@ BigInt SVM::GetValue(SExp *s){
 				return (GetValue(s->elems[0]) >= GetValue(s->elems[1]));
 			}
 			else{
-				//ÆäËûº¯Êı
+				//å…¶ä»–å‡½æ•°
 				if (funcs.count(s->name) == 0){
 					SExp *e = 0;
 					if (sfuncs.count(s->name) == 0){
 						/*
 						if (s->name[0] == '`'){
-							//ºêº¯Êı£¬ºÜÇ¿´ó£¡
+							//å®å‡½æ•°ï¼Œå¾ˆå¼ºå¤§ï¼
 							e = SearchFile(s->name.substr(1), s);
-							if(s->parent)s->parent->elems[s->id] = e;	//ºêÌæ»»
+							if(s->parent)s->parent->elems[s->id] = e;	//å®æ›¿æ¢
 							//sfuncs[s->name] = e;
-							DelSExp(s);	//»ØÊÕ×ÊÔ´£¬ºêÌæ»»Ê¹ÓÃµÄÊÇÉî¿½±´
+							DelSExp(s);	//å›æ”¶èµ„æºï¼Œå®æ›¿æ¢ä½¿ç”¨çš„æ˜¯æ·±æ‹·è´
 							return GetValue(e);
 						}
 						else{
-							//ÆÕÍ¨º¯Êı
+							//æ™®é€šå‡½æ•°
 							e = SearchFile(s->name,s);
-							sfuncs[s->name] = e;	//¼ÇÂ¼
+							sfuncs[s->name] = e;	//è®°å½•
 						}*/
-						//½«ÆÕÍ¨º¯ÊıºÍºêºÏÔÚÒ»Æğ°É.
-						//ÏÖÔÚµÄºêÕ¹¿ªĞ§ÂÊ²»¸ß£¬ÒòÎªÓĞºÜ¶àÖØ¸´Ïî£¬¶øÇÒÓĞĞ©²»ÏîÄ¿ÆäÊµ²»ÓÃĞÂ½¨»òÒÆ¶¯
+						//å°†æ™®é€šå‡½æ•°å’Œå®åˆåœ¨ä¸€èµ·å§.
+						//ç°åœ¨çš„å®å±•å¼€æ•ˆç‡ä¸é«˜ï¼Œå› ä¸ºæœ‰å¾ˆå¤šé‡å¤é¡¹ï¼Œè€Œä¸”æœ‰äº›ä¸é¡¹ç›®å…¶å®ä¸ç”¨æ–°å»ºæˆ–ç§»åŠ¨
 						bool ismacro = false;
 						e = SearchFile(s->name, s,&ismacro);
 						if (ismacro){
-							if (s->parent)s->parent->elems[s->id] = e;	//ºêÌæ»»
-							DelSExp(s);	//»ØÊÕ×ÊÔ´£¬ºêÌæ»»Ê¹ÓÃµÄÊÇÉî¿½±´
+							if (s->parent)s->parent->elems[s->id] = e;	//å®æ›¿æ¢
+							DelSExp(s);	//å›æ”¶èµ„æºï¼Œå®æ›¿æ¢ä½¿ç”¨çš„æ˜¯æ·±æ‹·è´
 						}
 						else{
 							sfuncs[s->name] = e;
@@ -357,12 +375,12 @@ BigInt SVM::GetValue(SExp *s){
 					}
 					if (e){
 						SVM fvm;
-						//´«µİ²ÎÊıµ½ĞÂµÄĞéÄâ²ã
+						//ä¼ é€’å‚æ•°åˆ°æ–°çš„è™šæ‹Ÿå±‚
 						char temp[64];
 						fvm.debug = debug;
 						fvm.SetParent(this);
 
-						//fvm.vars["_0"] = BigInt(s->elems.size());	//_0±äÁ¿Îª²ÎÊı¸öÊı£¬µÚÒ»¸ö²ÎÊı½Ğ_1
+						//fvm.vars["_0"] = BigInt(s->elems.size());	//_0å˜é‡ä¸ºå‚æ•°ä¸ªæ•°ï¼Œç¬¬ä¸€ä¸ªå‚æ•°å«_1
 						fvm.SetArray("_", 0, BigInt(s->elems.size()));
 						for (int i = 0; i < s->elems.size(); ++i){
 							sprintf(temp, "_%d", i + 1);
@@ -371,7 +389,7 @@ BigInt SVM::GetValue(SExp *s){
 						}
 						return fvm.Eval(e);
 					}
-					cout << "´íÎó£º ²»´æÔÚº¯Êı£º" << s->name << "\n";
+					cout << "é”™è¯¯ï¼š ä¸å­˜åœ¨å‡½æ•°ï¼š" << s->name << "\n";
 					return BigInt();
 				}
 				return funcs[s->name](SPar(this, s));
@@ -395,15 +413,15 @@ BigInt SVM::GetValue(SExp *s){
 					GetValue(s->elems[i]);
 				}
 			}
-			return BigInt();//Ñ­»·½áÊø·µ»ØµÄÊÇ0
+			return BigInt();//å¾ªç¯ç»“æŸè¿”å›çš„æ˜¯0
 		}
 	}
 	catch (const char *msg){
 		cout << msg << endl;
-		cout << "¼ÆËã³ö´í£¡Çë¼ì²éÄúÊäÈëµÄÓï¾äÊÇ·ñÕıÈ·"<<endl;
+		cout << "è®¡ç®—å‡ºé”™ï¼è¯·æ£€æŸ¥æ‚¨è¾“å…¥çš„è¯­å¥æ˜¯å¦æ­£ç¡®"<<endl;
 	}
 	catch (...){
-		cout << "³öÏÖÁËÒì³££¬Çë¼ì²éÄúÊäÈëµÄÓï¾äÊÇ·ñÕıÈ·" << endl;
+		cout << "å‡ºç°äº†å¼‚å¸¸ï¼Œè¯·æ£€æŸ¥æ‚¨è¾“å…¥çš„è¯­å¥æ˜¯å¦æ­£ç¡®" << endl;
 	}
-	return BigInt();	//ÎŞĞ§ÃüÁî
+	return BigInt();	//æ— æ•ˆå‘½ä»¤
 }

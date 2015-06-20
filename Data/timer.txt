@@ -1,4 +1,4 @@
-(\
+
     (= st (clock))
     `1
     (= now (clock))
